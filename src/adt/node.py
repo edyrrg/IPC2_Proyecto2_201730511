@@ -21,6 +21,24 @@ class Node:
             self.__data = data
         raise TypeError('data cannot be changed because data is None')
 
+    def __eq__(self, other):
+        return self.data == other.data
+
+    def __ne__(self, other):
+        return self.data != other.data
+
+    def __lt__(self, other):
+        return self.data < other.data
+
+    def __le__(self, other):
+        return self.data <= other.data
+
+    def __gt__(self, other):
+        return self.data > other.data
+
+    def __ge__(self, other):
+        return self.data >= other.data
+
 
 if __name__ == '__main__':
     n1 = Node(1)
