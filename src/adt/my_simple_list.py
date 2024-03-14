@@ -69,6 +69,34 @@ class MySimpleList(MyList):
             if current_node.next is None:
                 raise IndexError("Not enough elements in the list...")
 
+    def search_node_data(self, search_value):
+        current_node = self.head
+        while current_node:
+            if current_node.data.__eq__(search_value):
+                return current_node.data
+            current_node = current_node.next
+        return None
+
+    def __iter__(self):
+        self._current = self.head
+        return self
+
+    def __next__(self):
+        if self._current is None:
+            raise StopIteration
+        else:
+            data = self._current.data
+            self._current = self._current.next
+            return data
+
+    def __len__(self):
+        count = 0
+        current_node = self.head
+        while current_node:
+            count += 1
+            current_node = current_node.next
+        return count
+
 
 if __name__ == '__main__':
     my_simple_list = MySimpleList()
@@ -79,7 +107,15 @@ if __name__ == '__main__':
     my_simple_list.append(88)
     try:
         my_simple_list.display_list()
+        result_data = my_simple_list.search_node_data(23)
+        if result_data:
+            print(f'Data found: {result_data}')
+        else:
+            print('No data found')
         print(f'Data found: {my_simple_list.get_node_data_by_index(2)}')
         print(f'Size List: {my_simple_list.size()}')
     except Exception as e:
         print(e)
+
+    for data1 in my_simple_list:
+        print(f'Node: {data1}')

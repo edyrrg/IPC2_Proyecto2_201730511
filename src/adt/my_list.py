@@ -34,3 +34,7 @@ class MyList(ABC):
     @abstractmethod
     def get_node_data_by_index(self, index):
         pass
+
+    @abstractmethod
+    def search_node_data(self, search_value):
+        pass
