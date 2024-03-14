@@ -50,7 +50,7 @@ class TestNode(unittest.TestCase):
         self.assertTrue(node1.__ge__(node2))
         self.assertTrue(node1.__ge__(node3))
 
-    def testNodeLessThanEqualsEquals(self):
+    def testNodeLessThanEquals(self):
         node1 = Node(4)
         node2 = Node(4)
         node3 = Node(15)
