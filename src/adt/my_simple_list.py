@@ -8,10 +8,10 @@ class MySimpleList(MyList):
         super().__init__(head=head)
 
     def append(self, data):
-        new_node = Node(data)
         if not data:
             Exception('The data value cannot be empty')
             return
+        new_node = Node(data)
         if self.head is None:
             self.head = new_node
             return
