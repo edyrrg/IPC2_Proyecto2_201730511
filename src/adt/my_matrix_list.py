@@ -1,5 +1,6 @@
 from src.adt.my_list import MyList
 from src.adt.node import Node
+from src.services.matrix_service import MatrixService
 
 
 class MyMatrixList(MyList):
@@ -7,48 +8,34 @@ class MyMatrixList(MyList):
     def __init__(self, head=None):
         super().__init__(head=head)
 
-    def append_next(self, data):
+    def append(self, data, new_row=False):
         if not data:
-            Exception('The data value cannot be empty')
-            return
+            raise Exception('The data value cannot be empty')
         new_node = Node(data)
         if not self.head:
             self.head = new_node
             return
-        current_node = self.head
-        while current_node.next:
-            current_node = current_node.next
-        current_node.next = new_node
-        new_node.prev = current_node
-
-    def append_down(self, data):
-        if not data:
-            Exception('The data value cannot be empty')
+        current_row = self.get_last_row()
+        if new_row:
+            while current_row.down:
+                current_row = current_row.down
+            MatrixService.connect_vertical_nodes(node_up=current_row, node_down=new_node)
             return
-        new_node = Node(data)
-        if not self.head:
-            self.head = new_node
+        if current_row.up:
+            previous_row = current_row.up
+            while current_row.next:
+                current_row = current_row.next
+                previous_row = previous_row.next
+            MatrixService.connect_horizontal_nodes(node_prev=current_row, node_next=new_node)
+            MatrixService.connect_vertical_nodes(node_up=previous_row.next, node_down=new_node)
             return
-        current_node = self.head
-        while current_node.down:
-            current_node = current_node.down
-        current_node.down = new_node
-        new_node.up = current_node
-
-    def append_column(self, data, row):
-        if not data:
-            Exception('The data value cannot be empty')
-            return
-        new_node = Node(data)
-        current_row = row
         while current_row.next:
             current_row = current_row.next
-        current_row.next = Node(data)
-        new_node.prev = current_row
+        MatrixService.connect_horizontal_nodes(node_prev=current_row, node_next=new_node)
 
     def get_last_row(self):
         if not self.head:
-            return
+            raise Exception('The matrix list is empty')
         current_down = self.head
         while current_down.down:
             current_down = current_down.down
@@ -65,19 +52,61 @@ class MyMatrixList(MyList):
 
     def display_list(self):
         if not self.head:
-            raise Exception('The matrix list is empty')
+            raise Exception('The matrix list is empty, cannot display it')
 
         current_row = self.head
         while current_row:
             current_column = current_row
             while current_column:
-                print(current_column.data, end=' ')
+                if current_column.next:
+                    print(current_column.data, end=' ')
+                if not current_column.next:
+                    print(current_column.data, end='')
                 current_column = current_column.next
             print()
             current_row = current_row.down
 
-    def get_node_data_by_index(self):
-        pass
+    def get_node_data_by_index(self, xi, yi):
+        if not self.head:
+            raise Exception('The matrix list is empty, cannot display it')
+        if xi <= 0 and yi <= 0:
+            raise IndexError("Index must be greater than zero")
+        if self.is_empty():
+            raise Exception("List is empty...")
+        if self.head and xi == 1 and yi == 1:
+            return self.head.data
+        count_x = 1
+        count_y = 1
+        current_node = self.head
+        if self.head and xi == 1 and yi > 1:
+            while current_node and count_y < yi:
+                count_y += 1
+                current_node = current_node.down
+                if count_y == yi:
+                    return current_node.data
+                if current_node.down is None:
+                    raise IndexError("Not enough elements in vertical direction...")
+        if self.head and yi == 1 and xi > 1:
+            while current_node and count_x < xi:
+                count_x += 1
+                current_node = current_node.next
+                if count_x == xi:
+                    return current_node.data
+                if current_node.next is None:
+                    raise IndexError("Not enough elements in horizontal direction...")
+        while current_node.next and count_x < xi:
+            count_x += 1
+            current_node = current_node.next
+            if count_x == xi:
+                while current_node.down and count_y < yi:
+                    count_y += 1
+                    current_node = current_node.down
+                    if count_y == yi:
+                        return current_node.data
+                    if current_node.down is None:
+                        raise IndexError("Not enough elements in vertical direction...")
+            if current_node.next is None:
+                raise IndexError("Not enough elements in horizontal direction...")
 
     def search_node_data(self, search_value):
         pass
@@ -85,21 +114,15 @@ class MyMatrixList(MyList):
 
 if __name__ == '__main__':
     patron1 = "**********-*-*---**-*-*-*-**---*-*-**-*-*-*-**-*-*-*-**-*---*-**-*-*-*-**-*-*---**********"
-    patron2 = "123456789123456789123456789"
     my_matrix_list = MyMatrixList()
-    for i in range(5):
-        my_matrix_list.append_next(patron2[i])
-    my_matrix_list.append_down(patron2[5])
+    count = 0
+    for i in range(10):
+        for j in range(9):
+            if j == 0:
+                my_matrix_list.append(patron1[count], new_row=True)
+                count += 1
+                continue
+            my_matrix_list.append(patron1[count])
+            count += 1
     my_matrix_list.display_list()
-    curr_row = my_matrix_list.get_last_row()
-    print(curr_row.data)
-    for i in range(6, 10):
-        my_matrix_list.append_column(data=patron2[i], row=curr_row)
-    my_matrix_list.display_list()
-    curr_row = my_matrix_list.get_last_row()
-    print(curr_row.up.data)
-
-
-
-
-
+    print(my_matrix_list.get_node_data_by_index(xi=1, yi=9))

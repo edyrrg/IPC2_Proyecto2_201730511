@@ -39,6 +39,9 @@ class Node:
     def __ge__(self, other):
         return self.data >= other.data
 
+    def __str__(self):
+        return str(self.data)
+
 
 if __name__ == '__main__':
     n1 = Node(1)
