@@ -77,6 +77,14 @@ class MySimpleList(MyList):
             current_node = current_node.next
         return None
 
+    def search(self, search_value):
+        current_node = self.head
+        while current_node:
+            if current_node.data.__eq__(search_value):
+                return current_node.data
+            current_node = current_node.next
+        return None
+
     def __iter__(self):
         self._current = self.head
         return self
