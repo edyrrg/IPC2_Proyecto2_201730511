@@ -19,6 +19,8 @@ class FilesController:
     def get_list_files_in_dir(self, extension):
         list_of_files = MySimpleList()
         count = 0
+        if not self.directory.is_dir():
+            raise Exception('Directory does not exist')
         for _file in self.directory.iterdir():
             if _file.is_file() and _file.suffix == extension:
                 list_of_files.append(File(index=count, file_name=_file.name))
@@ -26,12 +28,17 @@ class FilesController:
         return list_of_files
 
     def set_file_by_index(self, index_selection_file):
-        _file = self.list_of_files.search(index_selection_file)
-        if _file:
-            self.file = _file
-            self.build_path_file()
-        else:
-            raise Exception('File not found')
+        try:
+            if not self.list_of_files:
+                raise Exception('list of files is empty')
+            _file = self.list_of_files.search(index_selection_file)
+            if _file:
+                self.file = _file
+                self.build_path_file()
+            else:
+                raise Exception('File not found')
+        except Exception as err:
+            print(err)
 
     def build_path_file(self):
         self.path_file = self.directory.__str__() + "/" + self.file.get_file_name()
@@ -43,12 +50,23 @@ class FilesController:
         self.directory = new_directory_path
 
     def is_path_file_correct(self):
-        return True if Path(self.path_file).exists() and Path(self.path_file).is_file() else False
+        try:
+            if self.path_file is None:
+                raise Exception('Path file not build yet')
+            return True if Path(self.path_file).exists() and Path(self.path_file).is_file() else False
+        except Exception as err:
+            print(err)
+
+    def get_list_files(self):
+        try:
+            self.list_of_files.display_list()
+        except Exception as err:
+            print(err)
 
 
 if __name__ == "__main__":
-    controller = FilesController('../../enter_files_xml/', '.xml')
-    controller.list_of_files.display_list()
+    controller = FilesController('../../enter_files_ml/', '.xml')
+    controller.get_list_files()
     controller.set_file_by_index(1)
     print(controller.get_path_file())
     print(f'Path file is correct?: {controller.is_path_file_correct()}')
