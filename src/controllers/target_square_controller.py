@@ -16,7 +16,7 @@ class TargetSquareController(EntitySquareController):
         return TargetSquare(content=str(name.text).strip(), index_x=str(row.text).strip(),
                             index_y=str(column.text).strip())
 
-    def list_of_targets_square(self, target_parent):
+    def create_list_of_targets_square(self, target_parent):
         targets_children = self.xml_service.get_child_by_parent_tag(target_parent, "objetivos")
         my_simple_list = MySimpleList()
         index_target_square_count = 0
