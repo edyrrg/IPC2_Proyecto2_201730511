@@ -26,21 +26,26 @@ class MockUpController:
             columns = self.get_text_to_xml_element(child, "columnas")
             start_square = self.start_square_controller.create_entity(child)
             targets_square_list = self.target_square_controller.create_list_of_targets_square(child)
-            tmp_mock_up = self.create_entity(name, rows, columns, start_square, targets_square_list)
-
+            structure_square_list = (self.
+                                     structure_square_controller.create_matrix_list_structure(child,
+                                                                                              int(rows),
+                                                                                              int(columns)))
+            tmp_mock_up = self.create_entity(name, rows, columns, start_square,
+                                             targets_square_list, structure_square_list)
             my_simple_list.append(tmp_mock_up)
         return my_simple_list
 
     @classmethod
-    def create_entity(cls, name, rows, columns, start_square, targets_square_list):
-        return MockUp(name, rows, columns, start_square, targets_square_list)
+    def create_entity(cls, name, rows, columns, start_square, targets_square_list, structure_square_list):
+        return MockUp(name, rows, columns, start_square, targets_square_list, structure_square_list)
 
 
 if __name__ == '__main__':
     xml_handler = XMLService("../../enter_files_xml/archivo-prueba-1.xml")
     mock_up_controller = MockUpController(xml_handler)
     tmp_mock_ups = mock_up_controller.create_list_of_mock_ups()
-    tmp_mock_ups.display_list()
-    sorted_mock_ups = sorted(tmp_mock_ups)
-    for mock_up in sorted_mock_ups:
-        print(mock_up)
+    # tmp_mock_ups.display_list()
+    for mock_up in tmp_mock_ups:
+        # mock_up.matrix_structure_square_list.display_list()
+        mock_up.build_mock_up_structure()
+

@@ -7,4 +7,4 @@ class PathSquare(Square):
         super().__init__(content)
 
     def __str__(self):
-        return f'PathSquare {self.content}'
+        return f'{self.content}'

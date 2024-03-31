@@ -15,7 +15,7 @@ class TargetSquare(IndexedSquare):
         self.__nr_order = value
 
     def __str__(self):
-        return f'TargetSquare {self.nr_order}, {self.content}, {self.index_x}, {self.index_y}'
+        return f'{self.content}'
 
 
 if __name__ == '__main__':

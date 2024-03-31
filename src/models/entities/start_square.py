@@ -6,7 +6,7 @@ class StartSquare(IndexedSquare):
         super().__init__(content, index_x, index_y)
 
     def __str__(self):
-        return f'StartSquare {self.content}, {self.index_x}, {self.index_y}'
+        return f'{self.content}'
 
 
 if __name__ == '__main__':
