@@ -66,13 +66,51 @@ class MyMatrixList(MyList):
             print()
             current_row = current_row.down
 
-    def get_node_data_by_index(self, xi, yi):
-        if not self.head:
-            raise Exception('The matrix list is empty, cannot display it')
-        if xi <= 0 and yi <= 0:
+    def get_node_by_index(self, xi, yi):
+        if xi <= 0 or yi <= 0:
             raise IndexError("Index must be greater than zero")
         if self.is_empty():
-            raise Exception("List is empty...")
+            raise Exception("The matrix list is empty, cannot display it")
+        if self.head and xi == 1 and yi == 1:
+            return self.head
+        count_x = 1
+        count_y = 1
+        current_node = self.head
+        if self.head and xi == 1 and yi > 1:
+            while current_node and count_y < yi:
+                count_y += 1
+                current_node = current_node.down
+                if count_y == yi:
+                    return current_node
+                if current_node.down is None:
+                    raise IndexError("Not enough elements in vertical direction...")
+        if self.head and yi == 1 and xi > 1:
+            while current_node and count_x < xi:
+                count_x += 1
+                current_node = current_node.next
+                if count_x == xi:
+                    return current_node
+                if current_node.next is None:
+                    raise IndexError("Not enough elements in horizontal direction...")
+        while current_node.next and count_x < xi:
+            count_x += 1
+            current_node = current_node.next
+            if count_x == xi:
+                while current_node.down and count_y < yi:
+                    count_y += 1
+                    current_node = current_node.down
+                    if count_y == yi:
+                        return current_node
+                    if current_node.down is None:
+                        raise IndexError("Not enough elements in vertical direction...")
+            if current_node.next is None:
+                raise IndexError("Not enough elements in horizontal direction...")
+
+    def get_node_data_by_index(self, xi, yi):
+        if xi <= 0 or yi <= 0:
+            raise IndexError("Index must be greater than zero")
+        if self.is_empty():
+            raise Exception("The matrix list is empty, cannot display it")
         if self.head and xi == 1 and yi == 1:
             return self.head.data
         count_x = 1
@@ -109,20 +147,77 @@ class MyMatrixList(MyList):
                 raise IndexError("Not enough elements in horizontal direction...")
 
     def search_node_data(self, search_value):
-        pass
+        if not self.head:
+            raise Exception('The matrix list is empty, cannot display it')
+
+        current_row = self.head
+        while current_row:
+            current_column = current_row
+            while current_column:
+                if current_column.__eq__(search_value):
+                    return current_column
+                current_column = current_column.next
+            current_row = current_row.down
+        return None
+
+    def update_node_data_by_index(self, xi, yi, value):
+        if xi <= 0 or yi <= 0 or not value:
+            raise IndexError("Index must be greater than zero or value is None")
+        if self.is_empty():
+            raise Exception("The matrix list is empty, cannot display it")
+        if self.head and xi == 1 and yi == 1:
+            self.head.data = value
+        count_x = 1
+        count_y = 1
+        current_node = self.head
+        if self.head and xi == 1 and yi > 1:
+            while current_node and count_y < yi:
+                count_y += 1
+                current_node = current_node.down
+                if count_y == yi:
+                    current_node.data = value
+                if current_node.down is None:
+                    raise IndexError("Not enough elements in vertical direction...")
+        if self.head and yi == 1 and xi > 1:
+            while current_node and count_x < xi:
+                count_x += 1
+                current_node = current_node.next
+                if count_x == xi:
+                    current_node = value
+                if current_node.next is None:
+                    raise IndexError("Not enough elements in horizontal direction...")
+        while current_node.next and count_x < xi:
+            count_x += 1
+            current_node = current_node.next
+            if count_x == xi:
+                while current_node.down and count_y < yi:
+                    count_y += 1
+                    current_node = current_node.down
+                    if count_y == yi:
+                        current_node.data = value
+                        return
+                    if current_node.down is None:
+                        raise IndexError("Not enough elements in vertical direction...")
+            if current_node.next is None:
+                raise IndexError("Not enough elements in horizontal direction...")
 
 
 if __name__ == '__main__':
     patron1 = "**********-*-*---**-*-*-*-**---*-*-**-*-*-*-**-*-*-*-**-*---*-**-*-*-*-**-*-*---**********"
+    patron2 = "132456789"
     my_matrix_list = MyMatrixList()
     count = 0
-    for i in range(10):
-        for j in range(9):
+    for i in range(3):
+        for j in range(3):
             if j == 0:
-                my_matrix_list.append(patron1[count], new_row=True)
+                my_matrix_list.append(patron2[count], new_row=True)
                 count += 1
                 continue
-            my_matrix_list.append(patron1[count])
+            my_matrix_list.append(patron2[count])
             count += 1
     my_matrix_list.display_list()
-    print(my_matrix_list.get_node_data_by_index(xi=1, yi=9))
+    print(my_matrix_list.get_node_data_by_index(xi=1, yi=3))
+    print(my_matrix_list.search_node_data("9"))
+    my_matrix_list.update_node_data_by_index(2, 2, "6")
+    my_matrix_list.display_list()
+    print(my_matrix_list.get_node_data_by_index(2, 2))

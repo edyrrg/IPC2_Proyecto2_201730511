@@ -17,16 +17,16 @@ class XMLService:
         return self.root.find(tag)
 
     @staticmethod
-    def get_text_from_child_by_parent_tag(parent, tag):
+    def get_child_by_parent_tag(parent, tag):
         return parent.find(tag)
 
 
 if __name__ == '__main__':
     xml = XMLService('../../enter_files_xml/archivo-prueba-1.xml')
     maquetas = xml.get_parent("maquetas")
-    print(maquetas.items())
+    print(maquetas)
     for el in maquetas:
-        print(el.tag, el)
-        print(xml.get_text_from_child_by_parent_tag(el, "nombre"))
+        print(el)
+        print(xml.get_child_by_parent_tag(el, "nombre"))
         for child in el:
             print(child.tag)
