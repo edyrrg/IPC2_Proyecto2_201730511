@@ -66,6 +66,34 @@ class MyMatrixList(MyList):
             print()
             current_row = current_row.down
 
+    def __iter__(self):
+        if not self.head:
+            raise Exception('The matrix list is empty, cannot iterate over')
+        current_row = self.head
+        while current_row:
+            current_column = current_row
+            while current_column:
+                yield current_column.data
+                current_column = current_column.next
+            current_row = current_row.down
+
+    def to_str(self):
+        if not self.head:
+            raise Exception('The matrix list is empty, cannot display it')
+        tmp_str = "\t"
+        current_row = self.head
+        while current_row:
+            current_column = current_row
+            while current_column:
+                if current_column.next:
+                    tmp_str += str(current_column.data) + ' '
+                if not current_column.next:
+                    tmp_str += str(current_column.data) + ''
+                current_column = current_column.next
+            tmp_str += "\n\t"
+            current_row = current_row.down
+        return tmp_str
+
     def get_node_by_index(self, xi, yi):
         if xi <= 0 or yi <= 0:
             raise IndexError("Index must be greater than zero")
@@ -183,7 +211,7 @@ class MyMatrixList(MyList):
                 count_x += 1
                 current_node = current_node.next
                 if count_x == xi:
-                    current_node = value
+                    current_node.data = value
                 if current_node.next is None:
                     raise IndexError("Not enough elements in horizontal direction...")
         while current_node.next and count_x < xi:
@@ -203,21 +231,22 @@ class MyMatrixList(MyList):
 
 
 if __name__ == '__main__':
-    patron1 = "**********-*-*---**-*-*-*-**---*-*-**-*-*-*-**-*-*-*-**-*---*-**-*-*-*-**-*-*---**********"
-    patron2 = "132456789"
+    patron1 = "--***********-**-*-*-*---*---**---*-*-*-*-*-***-**-*-*-*-*-*------*-*-*-*-******-*-*-*-*-**-------*-*-*-**-*****-*--**-**--------*----*******-********"
+    patron2 = "123456789ABCDEFG"
     my_matrix_list = MyMatrixList()
     count = 0
-    for i in range(3):
-        for j in range(3):
+    for i in range(10):
+        for j in range(15):
             if j == 0:
-                my_matrix_list.append(patron2[count], new_row=True)
+                my_matrix_list.append(patron1[count], new_row=True)
                 count += 1
                 continue
-            my_matrix_list.append(patron2[count])
+            my_matrix_list.append(patron1[count])
             count += 1
     my_matrix_list.display_list()
-    print(my_matrix_list.get_node_data_by_index(xi=1, yi=3))
-    print(my_matrix_list.search_node_data("9"))
-    my_matrix_list.update_node_data_by_index(2, 2, "6")
+    print(my_matrix_list.get_node_data_by_index(xi=2, yi=3))
+    print(my_matrix_list.search_node_data("*"))
+    my_matrix_list.update_node_data_by_index(3, 4, "Z")
     my_matrix_list.display_list()
     print(my_matrix_list.get_node_data_by_index(2, 2))
+    print(my_matrix_list.to_str())

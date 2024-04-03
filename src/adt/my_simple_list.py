@@ -105,6 +105,40 @@ class MySimpleList(MyList):
             current_node = current_node.next
         return count
 
+    def sort_descending(self):
+        if not self.head or not self.head.next:
+            return
+
+        is_sorted = False
+        while not is_sorted:
+            is_sorted = True
+
+            current_node = self.head
+            while current_node.next:
+
+                if current_node.data.__gt__(current_node.next.data):
+                    tmp = current_node.next.data
+                    current_node.next.data = current_node.data
+                    current_node.data = tmp
+                current_node = current_node.next
+
+    def sort_ascending(self):
+        if not self.head or not self.head.next:
+            return
+
+        is_sorted = False
+        while not is_sorted:
+            is_sorted = True
+
+            current_node = self.head
+            while current_node.next:
+
+                if current_node.data.__lt__(current_node.next.data):
+                    tmp = current_node.next.data
+                    current_node.next.data = current_node.data
+                    current_node.data = tmp
+                current_node = current_node.next
+
 
 if __name__ == '__main__':
     my_simple_list = MySimpleList()

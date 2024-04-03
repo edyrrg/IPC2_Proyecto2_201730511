@@ -1,5 +1,8 @@
+from src.gui.gui import GUI
+
+
 def init():
-    print("Inicializando")
+    GUI()
 
 
 if __name__ == '__main__':

@@ -41,11 +41,18 @@ class MockUpController:
 
 
 if __name__ == '__main__':
-    xml_handler = XMLService("../../enter_files_xml/archivo-prueba-1.xml")
+    xml_handler = XMLService("../../enter_files_xml/archivo-prueba-2.xml")
     mock_up_controller = MockUpController(xml_handler)
     tmp_mock_ups = mock_up_controller.create_list_of_mock_ups()
-    # tmp_mock_ups.display_list()
-    for mock_up in tmp_mock_ups:
-        # mock_up.matrix_structure_square_list.display_list()
-        mock_up.build_mock_up_structure()
+    tmp_mock_ups.display_list()
+    tmp_mock_ups.sort_ascending()
+    tmp_mock_ups.display_list()
+    tmp_mock_ups.sort_descending()
+    tmp_mock_ups.display_list()
+
+    #for mock_up in tmp_mock_ups:
+    #    mock_up.matrix_structure.display_list()
+    #    print()
+    #    mock_up.matrix_structure_build.display_list()
+    #    print()
 

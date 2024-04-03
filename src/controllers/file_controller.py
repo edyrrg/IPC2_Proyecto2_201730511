@@ -6,13 +6,9 @@ from src.models.file import File
 
 class FilesController:
     def __init__(self, path, extension):
-        try:
-            self.directory = Path(path)
-            if not self.directory.exists():
-                raise Exception('Directory does not exist')
+        self.directory = Path(path)
+        if self.is_correct_directory_path():
             self.list_of_files = self.get_list_files_in_dir(extension=extension)
-        except Exception as err:
-            print(err)
         self.file = None
         self.path_file = None
 
@@ -28,17 +24,14 @@ class FilesController:
         return list_of_files
 
     def set_file_by_index(self, index_selection_file):
-        try:
-            if not self.list_of_files:
-                raise Exception('list of files is empty')
-            _file = self.list_of_files.search(index_selection_file)
-            if _file:
-                self.file = _file
-                self.build_path_file()
-            else:
-                raise Exception('File not found')
-        except Exception as err:
-            print(err)
+        if not self.list_of_files:
+            raise Exception('list of files is empty')
+        _file = self.list_of_files.search(index_selection_file)
+        if _file:
+            self.file = _file
+            self.build_path_file()
+        else:
+            raise Exception('File not found')
 
     def build_path_file(self):
         self.path_file = self.directory.__str__() + "/" + self.file.get_file_name()
@@ -50,18 +43,18 @@ class FilesController:
         self.directory = new_directory_path
 
     def is_path_file_correct(self):
-        try:
-            if self.path_file is None:
-                raise Exception('Path file not build yet')
-            return True if Path(self.path_file).exists() and Path(self.path_file).is_file() else False
-        except Exception as err:
-            print(err)
+        if self.path_file is None:
+            raise Exception('Path file not build yet')
+        return True if Path(self.path_file).exists() and Path(self.path_file).is_file() else False
 
     def get_list_files(self):
         try:
             self.list_of_files.display_list()
         except Exception as err:
             print(err)
+
+    def is_correct_directory_path(self):
+        return True if self.directory.exists() else False
 
 
 if __name__ == "__main__":
