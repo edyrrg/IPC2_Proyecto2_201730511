@@ -11,4 +11,4 @@ class StartSquareController(EntitySquareController):
         input_xml_el = self.xml_service.get_child_by_parent_tag(child, "entrada")
         row = self.xml_service.get_child_by_parent_tag(input_xml_el, "fila")
         column = self.xml_service.get_child_by_parent_tag(input_xml_el, "columna")
-        return StartSquare("/", str(row.text).strip(), str(column.text).strip())
+        return StartSquare(content="/", index_y=str(row.text).strip(), index_x=str(column.text).strip())

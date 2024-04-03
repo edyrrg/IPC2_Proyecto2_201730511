@@ -17,6 +17,9 @@ class TargetSquare(IndexedSquare):
     def __str__(self):
         return f'{self.content}'
 
+    def show(self):
+        return f'TargetSquare={self.content}, x={self.index_x}, y={self.index_y}'
+
 
 if __name__ == '__main__':
     target_square = TargetSquare(1, "B", 2, 1)

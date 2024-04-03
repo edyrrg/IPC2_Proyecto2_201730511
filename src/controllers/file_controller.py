@@ -9,8 +9,6 @@ class FilesController:
         self.directory = Path(path)
         if self.is_correct_directory_path():
             self.list_of_files = self.get_list_files_in_dir(extension=extension)
-        else:
-            self.list_of_files = None
         self.file = None
         self.path_file = None
 

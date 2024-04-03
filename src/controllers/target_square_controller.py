@@ -13,16 +13,16 @@ class TargetSquareController(EntitySquareController):
         name = self.xml_service.get_child_by_parent_tag(child, "nombre")
         row = self.xml_service.get_child_by_parent_tag(child, "fila")
         column = self.xml_service.get_child_by_parent_tag(child, "columna")
-        return TargetSquare(content=str(name.text).strip(), index_x=str(row.text).strip(),
-                            index_y=str(column.text).strip())
+        return TargetSquare(content=str(name.text).strip(), index_y=str(row.text).strip(),
+                            index_x=str(column.text).strip())
 
     def create_list_of_targets_square(self, target_parent):
         targets_children = self.xml_service.get_child_by_parent_tag(target_parent, "objetivos")
         my_simple_list = MySimpleList()
-        index_target_square_count = 0
+        index_target_square_count = 1
         for child in targets_children:
-            index_target_square_count += 1
             tmp_target_square = self.create_entity(child)
             tmp_target_square.nr_order = index_target_square_count
+            index_target_square_count += 1
             my_simple_list.append(tmp_target_square)
         return my_simple_list

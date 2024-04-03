@@ -8,6 +8,9 @@ class StartSquare(IndexedSquare):
     def __str__(self):
         return f'{self.content}'
 
+    def show(self):
+        return f'StartSquare={self.content}, x={self.index_x}, y={self.index_y}'
+
 
 if __name__ == '__main__':
     start_square = StartSquare("+", 1, 2)
