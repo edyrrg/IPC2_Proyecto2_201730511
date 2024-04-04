@@ -91,15 +91,15 @@ class MyMatrixList(MyList):
     def __reversed__(self):
         if not self.head:
             raise Exception('The matrix list is empty, cannot reverse it')
-        current_row = self.head
-        while current_row.next:
-            current_row = current_row.next
+        current_row = self.get_last_node()
+        #while current_row.next:
+        #    current_row = current_row.next
         while current_row:
             current_column = current_row
             while current_column:
                 yield current_column
                 current_column = current_column.prev
-            current_row = current_row.down
+            current_row = current_row.up
 
     def __iter__(self):
         if not self.head:

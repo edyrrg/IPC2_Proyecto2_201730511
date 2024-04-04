@@ -58,7 +58,7 @@ class FilesController:
 
 
 if __name__ == "__main__":
-    controller = FilesController('../../enter_files_xml/', '.xml')
+    controller = FilesController('../../files_xml/', '.xml')
     controller.get_list_files()
     controller.set_file_by_index(1)
     print(controller.get_path_file())

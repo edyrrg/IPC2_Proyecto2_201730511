@@ -41,7 +41,7 @@ class MockUpController:
 
 
 if __name__ == '__main__':
-    xml_handler = XMLService("../../enter_files_xml/archivo-prueba-2.xml")
+    xml_handler = XMLService("../../files_xml/archivo-prueba-2.xml")
     mock_up_controller = MockUpController(xml_handler)
     tmp_mock_ups = mock_up_controller.create_list_of_mock_ups()
     tmp_mock_ups.display_list()

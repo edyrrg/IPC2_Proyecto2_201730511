@@ -22,7 +22,7 @@ class XMLService:
 
 
 if __name__ == '__main__':
-    xml = XMLService('../../enter_files_xml/archivo-prueba-1.xml')
+    xml = XMLService('../../files_xml/archivo-prueba-1.xml')
     maquetas = xml.get_parent("maquetas")
     print(maquetas)
     for el in maquetas:

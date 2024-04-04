@@ -13,8 +13,8 @@ from src.services.xml_service import XMLService
 class GraphvizService:
     def __init__(self, name):
         self.name = name
-        self.graph = graphviz.Digraph(name=f'resolve_{self.name}',
-                                      filename=f'resolve_{self.name}',
+        self.graph = graphviz.Digraph(name=f'{self.name}',
+                                      filename=f'{self.name}',
                                       comment=f'The Graph to MockUp: {self.name}',
                                       directory='../../graphviz_render/')
         self.graph.attr(rankdir='LR')
@@ -35,23 +35,23 @@ class GraphvizService:
         if isinstance(node.data, StartSquare):
             self.graph.node(node.data.id, label=f"{node.data}", shape='box', style='filled', color='green')
         if isinstance(node.data, TargetSquare):
-            self.graph.node(node.data.id, label=f"{node.data}", shape='box', style='filled', color='yellow')
-        if node.prev:
-            self.graph.edge(node.data.id, node.prev.data.id)
+            self.graph.node(node.data.id, label=f"Nr.O_{node.data.nr_order}\n{node.data}", shape='box', style='filled', color='yellow')
+        if node.next:
+            self.graph.edge(node.data.id, node.next.data.id)
 
     def show_graphviz(self):
         self.graph.view()
 
 
 if __name__ == '__main__':
-    xml_handler = XMLService("../../enter_files_xml/archivo-prueba-1.xml")
+    xml_handler = XMLService("../../files_xml/archivo-prueba-2.xml")
     mock_up_controller = MockUpController(xml_handler)
     tmp_mock_ups = mock_up_controller.create_list_of_mock_ups()
     # tmp_mock_ups.display_list()
     matrix = tmp_mock_ups.get_node_data_by_index(2)
     #matrix.matrix_structure.display_list()
     matrix.matrix_structure_build.display_list()
-    graphviz_service = GraphvizService('Prueba')
+    graphviz_service = GraphvizService('configuration_' + matrix.name)
     #graphviz_service.matrix_list_to_graphviz(matrix.matrix_structure)
     graphviz_service.matrix_list_to_graphviz(matrix.matrix_structure_build)
     graphviz_service.show_graphviz()

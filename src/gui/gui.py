@@ -3,6 +3,7 @@ from src.controllers.file_controller import FilesController
 from src.controllers.input_handler import InputHandler
 from src.controllers.mock_up_controller import MockUpController
 from src.models.entities.mock_up import MockUp
+from src.services.graphviz_service import GraphvizService
 from src.services.xml_service import XMLService
 
 
@@ -16,6 +17,7 @@ class GUI:
         self.xml_service: XMLService = None
         self.mockup_controller: MockUpController = None
         self.list_of_mockups: MySimpleList = None
+        self.graphviz_service: GraphvizService = None
         self.get_user_path()
         self.main_menu()
 
@@ -70,12 +72,13 @@ class GUI:
             print("**** Mockup menu ****")
             print("1 ----- See list of Mockups in alphabetical order")
             print("2 ----- See Mockup configuration")
+            print("3 ----- Back to Main Menu")
             user_input = InputHandler.handler_input_option(1, 3)
             if user_input == 1:
                 self.see_list_of_mockups()
-                return
             if user_input == 2:
                 self.see_mockup_configuration()
+            if user_input == 3:
                 return
 
     def see_list_of_mockups(self):
@@ -94,6 +97,9 @@ class GUI:
         print(tmp.name)
         tmp.matrix_structure_build.display_list()
         print(tmp.targets_square_list_to_list_text())
+        self.graphviz_service = GraphvizService("configuration_" + tmp.name)
+        self.graphviz_service.matrix_list_to_graphviz(tmp.matrix_structure_build)
+        self.graphviz_service.show_graphviz()
 
     def help_me(self):
         print("\nHello User!")
