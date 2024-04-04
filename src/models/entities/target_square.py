@@ -2,9 +2,17 @@ from src.models.entities.indexed_square import IndexedSquare
 
 
 class TargetSquare(IndexedSquare):
+    count_id = 0
+
     def __init__(self, content, index_x, index_y, nr_order=None):
+        TargetSquare.count_id += 1
+        self.__id = "TargetSquare" + str(TargetSquare.count_id)
         super().__init__(content, index_x, index_y)
         self.__nr_order = nr_order
+
+    @property
+    def id(self):
+        return self.__id
 
     @property
     def nr_order(self):
