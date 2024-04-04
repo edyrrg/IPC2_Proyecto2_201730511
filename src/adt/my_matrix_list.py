@@ -48,7 +48,19 @@ class MyMatrixList(MyList):
         return True if self.head is None else False
 
     def size(self):
-        pass
+        if self.is_empty():
+            raise Exception('The matrix list is empty')
+        current_row = self.head
+        current_column = current_row
+        x = 0
+        y = 0
+        while current_row:
+            x += 1
+            current_row = current_row.down
+        while current_column:
+            y += 1
+            current_column = current_column.next
+        return x, y
 
     def display_list(self):
         if not self.head:
@@ -66,6 +78,29 @@ class MyMatrixList(MyList):
             print()
             current_row = current_row.down
 
+    def get_last_node(self):
+        last_row = self.head
+        while last_row.down:
+            last_row = last_row.down
+        last_column = last_row
+        while last_column.next:
+            last_column = last_column.next
+        last_node = last_column
+        return last_node
+
+    def __reversed__(self):
+        if not self.head:
+            raise Exception('The matrix list is empty, cannot reverse it')
+        current_row = self.head
+        while current_row.next:
+            current_row = current_row.next
+        while current_row:
+            current_column = current_row
+            while current_column:
+                yield current_column
+                current_column = current_column.prev
+            current_row = current_row.down
+
     def __iter__(self):
         if not self.head:
             raise Exception('The matrix list is empty, cannot iterate over')
@@ -73,7 +108,10 @@ class MyMatrixList(MyList):
         while current_row:
             current_column = current_row
             while current_column:
-                yield current_column.data
+                if current_column.next:
+                    yield current_column, False
+                if not current_column.next:
+                    yield current_column, False
                 current_column = current_column.next
             current_row = current_row.down
 
@@ -235,13 +273,13 @@ if __name__ == '__main__':
     patron2 = "123456789ABCDEFG"
     my_matrix_list = MyMatrixList()
     count = 0
-    for i in range(10):
-        for j in range(15):
+    for i in range(4):
+        for j in range(4):
             if j == 0:
-                my_matrix_list.append(patron1[count], new_row=True)
+                my_matrix_list.append(patron2[count], new_row=True)
                 count += 1
                 continue
-            my_matrix_list.append(patron1[count])
+            my_matrix_list.append(patron2[count])
             count += 1
     my_matrix_list.display_list()
     print(my_matrix_list.get_node_data_by_index(xi=2, yi=3))
@@ -250,3 +288,9 @@ if __name__ == '__main__':
     my_matrix_list.display_list()
     print(my_matrix_list.get_node_data_by_index(2, 2))
     print(my_matrix_list.to_str())
+    print(my_matrix_list.size())
+    print(my_matrix_list.get_last_node())
+    # for node, arg in my_matrix_list:
+    #    print(node, arg)
+    for node in reversed(my_matrix_list):
+        print(node)
