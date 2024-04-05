@@ -19,9 +19,6 @@ class GraphvizService:
                                       directory='../../graphviz_render/')
         self.graph.attr(rankdir='LR')
         self.graph.attr('edge', arrowhead='none')
-        # self.graph.node("Hello", shape='circle', style='filled', color='brown')
-        # self.graph.node("World", shape='box', style='filled', color='green')
-        # self.graph.edge("Hello", "World")
 
     def matrix_list_to_graphviz(self, matrix_list: MyMatrixList):
         for node in reversed(matrix_list):
@@ -29,13 +26,24 @@ class GraphvizService:
 
     def node_to_graphviz(self, node: Node):
         if isinstance(node.data, PathSquare):
-            self.graph.node(node.data.id, label=f"{node.data}", shape='box', style="dotted", color='black')
+            if node.data.is_traveled:
+                self.graph.node(node.data.id, label=f"{node.data}", shape='box', style="filled", color='blue')
+            else:
+                self.graph.node(node.data.id, label=f"{node.data}", shape='box', style="dotted", color='black')
         if isinstance(node.data, WallSquare):
             self.graph.node(node.data.id, label=f"{node.data}", shape='box', style='filled', color='brown')
         if isinstance(node.data, StartSquare):
             self.graph.node(node.data.id, label=f"{node.data}", shape='box', style='filled', color='green')
         if isinstance(node.data, TargetSquare):
-            self.graph.node(node.data.id, label=f"Nr.O_{node.data.nr_order}\n{node.data}", shape='box', style='filled', color='yellow')
+            if node.data.is_traveled:
+                self.graph.node(node.data.id, label=f"Nr.O_{node.data.nr_order}\n{node.data}", shape='box',
+                                style='filled',
+                                color='blue')
+            else:
+                self.graph.node(node.data.id, label=f"Nr.O_{node.data.nr_order}\n{node.data}", shape='box',
+                                style='filled',
+                                color='yellow')
+
         if node.next:
             self.graph.edge(node.data.id, node.next.data.id)
 

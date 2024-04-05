@@ -1,7 +1,10 @@
+import copy
+
 from src.adt.my_simple_list import MySimpleList
 from src.controllers.file_controller import FilesController
 from src.controllers.input_handler import InputHandler
 from src.controllers.mock_up_controller import MockUpController
+from src.controllers.mockup_solver_controller import MockupSolverController
 from src.models.entities.mock_up import MockUp
 from src.services.graphviz_service import GraphvizService
 from src.services.xml_service import XMLService
@@ -55,7 +58,7 @@ class GUI:
             if user_input == 3:
                 self.mockup_manage()
             if user_input == 4:
-                return
+                self.mockup_resolution_manage()
             if user_input == 5:
                 self.help_me()
             if user_input == 6:
@@ -99,6 +102,33 @@ class GUI:
         print(tmp.targets_square_list_to_list_text())
         self.graphviz_service = GraphvizService("configuration_" + tmp.name)
         self.graphviz_service.matrix_list_to_graphviz(tmp.matrix_structure_build)
+        self.graphviz_service.show_graphviz()
+
+    def mockup_resolution_manage(self):
+        if not self.xml_service:
+            print("Select an xml file first...")
+            return
+        self.mockup_controller = MockUpController(self.xml_service)
+        self.list_of_mockups = self.mockup_controller.create_list_of_mock_ups()
+        count = 0
+        print("Select Mockup to resolve")
+        for mockup in self.list_of_mockups:
+            count += 1
+            print(f'{count} -------------------- {mockup.name}')
+        print("3 -------------------- Back to Main Menu")
+        user_input = InputHandler.handler_input_option(0, self.list_of_mockups.__len__() + 1)
+        if user_input == 3:
+            return
+        tmp: MockUp = self.list_of_mockups.get_node_data_by_index(user_input)
+        # print(tmp.name)
+        # tmp.matrix_structure_build.display_list()
+        # print(tmp.targets_square_list_to_list_text())
+        mockup_build = copy.deepcopy(tmp.matrix_structure_build)
+        targets_list = copy.deepcopy(tmp.target_squares_list)
+        mockup_resolver_controller = MockupSolverController(mockup_build, targets_list)
+        mockup_resolver_controller.resolver()
+        self.graphviz_service = GraphvizService("resolve_" + tmp.name)
+        self.graphviz_service.matrix_list_to_graphviz(mockup_resolver_controller.mockup_build)
         self.graphviz_service.show_graphviz()
 
     def help_me(self):
