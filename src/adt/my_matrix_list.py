@@ -1,5 +1,6 @@
 from src.adt.my_list import MyList
 from src.adt.node import Node
+from src.models.entities.start_square import StartSquare
 from src.services.matrix_service import MatrixService
 
 
@@ -267,6 +268,17 @@ class MyMatrixList(MyList):
             if current_node.next is None:
                 raise IndexError("Not enough elements in horizontal direction...")
 
+    def get_start_square(self):
+        if self.is_empty():
+            raise Exception('The matrix list is empty')
+        current_row = self.head
+        while current_row:
+            current_column = current_row
+            while current_column:
+                if isinstance(current_column.data, StartSquare):
+                    return current_column
+                current_column = current_column.next
+            current_row = current_row.down
 
 if __name__ == '__main__':
     patron1 = "--***********-**-*-*-*---*---**---*-*-*-*-*-***-**-*-*-*-*-*------*-*-*-*-******-*-*-*-*-**-------*-*-*-**-*****-*--**-**--------*----*******-********"

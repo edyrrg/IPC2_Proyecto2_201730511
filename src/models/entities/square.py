@@ -22,6 +22,9 @@ class Square(ABC):
     def is_traveled(self, value):
         self.__is_traveled = value
 
+    def mark_traveled(self):
+        self.__is_traveled = True
+
     def __eq__(self, other):
         return self.content == other.content
 
